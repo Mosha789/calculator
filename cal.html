@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Casio fx-991CW Replica UI — Interactive Prototype</title>
+  <style>
+    :root{
+      --bg:#1f1f1f;
+      --panel:#3a3a3a;
+      --key:#d9d9d9;
+      --key-dark:#bdbdbd;
+      --gold:#d6a200;
+      --white:#ffffff;
+      --accent:#2b2b2b;
+      --screen:#e9e9e9;
+      --width:420px;
+    }
+    *{box-sizing:border-box}
+    body{display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#111}
+    .calc{width:var(--width);background:var(--bg);border-radius:18px;padding:18px 16px;box-shadow:0 12px 30px rgba(0,0,0,.6);font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+
+    /* top: solar + display */
+    .top{display:flex;flex-direction:column;gap:10px}
+    .solar{height:28px;background:linear-gradient(180deg,#111 0%,#222 100%);border-radius:4px;width:46%;margin-left:auto}
+    .screen{height:88px;background:var(--screen);border-radius:8px;padding:10px;display:flex;flex-direction:column;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+    .screen .brand{display:flex;justify-content:space-between;color:#222;font-weight:700}
+    .screen .display-line{height:44px;border-radius:6px;background:transparent;display:flex;align-items:center;justify-content:flex-end;padding:6px 10px;font-family:monospace;font-size:18px;color:#222}
+    .shift-ind{font-size:12px;color:var(--gold);margin-top:6px;height:14px}
+
+    /* keypad grid */
+    .keys{margin-top:12px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+    .row-wide{grid-column:span 2}
+
+    .key{
+      background:linear-gradient(180deg,var(--key) 0%,var(--key-dark) 100%);
+      border-radius:10px;padding:10px;min-height:46px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;cursor:pointer;user-select:none;border:1px solid rgba(0,0,0,.25);
+      box-shadow:0 3px 0 rgba(0,0,0,.25), inset 0 1px rgba(255,255,255,.4);
+    }
+    .key.small{min-height:36px;border-radius:8px}
+    .key.active{transform:translateY(2px);box-shadow:none}
+    .key .primary{font-size:16px;color:#111;font-weight:700}
+    .key .secondary{position:absolute;top:6px;left:8px;font-size:11px;color:var(--gold);font-weight:700}
+    .key .tertiary{position:absolute;top:6px;right:8px;font-size:11px;color:#555}
+
+    /* special key styles */
+    .key.gold{background:linear-gradient(180deg,#fbf1cf,#e4c75b);color:#000}
+    .key.op{background:linear-gradient(180deg,#3b3b3b,#222);color:#fff}
+    .key.big{grid-column:span 2}
+    .key.wide{grid-column:span 2}
+
+    /* navigation cluster layout */
+    .top-controls{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+    .nav-pad{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:6px}
+    .nav-pad .key{min-height:44px;border-radius:6px}
+    .page-scroll{grid-column:5/6;grid-row:1/3;min-height:92px;display:flex;align-items:center;justify-content:center}
+
+    /* footer note */
+    .note{color:#aaa;font-size:12px;margin-top:10px}
+
+    @media(max-width:480px){.calc{width:92%}}
+  </style>
+</head>
+<body>
+  <div class="calc" role="application" aria-label="Casio fx-991CW Replica UI">
+    <div class="top">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="solar" aria-hidden="true"></div>
+        <div style="width:8px"></div>
+      </div>
+
+      <div class="screen" id="screen">
+        <div class="brand"><div style="font-size:12px;color:#444">CASIO</div><div style="font-size:12px;color:#444">fx-991CW</div></div>
+        <div class="display-line" id="display-line">&nbsp;</div>
+        <div class="shift-ind" id="shift-ind">&nbsp;</div>
+      </div>
+
+      <!-- top nav cluster -->
+      <div class="top-controls" aria-hidden="false">
+        <div class="key small" data-id="ON"><div class="primary">ON</div></div>
+        <div class="key small" data-id="HOME"><div class="primary">HOME</div></div>
+        <div class="key small" data-id="UP_SMALL"><div class="primary">▲</div></div>
+        <div class="key small" data-id="SETTINGS"><div class="primary">SET</div></div>
+        <div class="key small" data-id="BACK_CURVE"><div class="primary">↩</div></div>
+      </div>
+
+      <div style="display:flex;gap:8px;align-items:flex-start">
+        <div class="nav-pad" style="flex:1">
+          <div class="key small" data-id="ARROW_UL"><div class="primary">◀</div></div>
+          <div class="key small" data-id="ARROW_U"><div class="primary">▲</div></div>
+          <div class="key small" data-id="ARROW_UR"><div class="primary">▶</div></div>
+          <div class="key small" data-id="ARROW_L"><div class="primary">◀</div></div>
+          <div class="key small" data-id="OK"><div class="primary">OK</div></div>
+          <div class="key small" data-id="ARROW_R"><div class="primary">▶</div></div>
+          <div class="key small" data-id="ARROW_DL"><div class="primary">◀</div></div>
+          <div class="key small" data-id="ARROW_D"><div class="primary">▼</div></div>
+          <div class="key small" data-id="ARROW_DR"><div class="primary">▶</div></div>
+        </div>
+
+        <div class="page-scroll key" data-id="PAGE_SCROLL" style="width:86px;min-height:96px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <div style="font-size:14px;color:#222">⇅</div>
+          <div style="font-size:11px;color:#666;margin-top:6px">Fast<br>Scroll</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- main keypad area -->
+    <div class="keys" id="keys">
+      <!-- function row -->
+      <div class="key gold" data-id="SHIFT"><div class="secondary">SHIFT</div><div class="primary">SHIFT</div></div>
+      <div class="key" data-id="VAR"><div class="secondary">VAR</div><div class="primary">VAR</div></div>
+      <div class="key" data-id="FCT"><div class="secondary">f(x)</div><div class="primary">FCT</div></div>
+      <div class="key" data-id="CURSOR_V"><div class="secondary">v</div><div class="primary">v</div></div>
+      <div class="key" data-id="CATALOG"><div class="secondary">CAT</div><div class="primary">CATALOG</div></div>
+
+      <div class="key" data-id="TOOLS"><div class="secondary">TOOL</div><div class="primary">TOOLS</div></div>
+      <div class="key" data-id="KEY_x"><div class="secondary">QR</div><div class="primary">x</div></div>
+      <div class="key" data-id="FRAC"><div class="primary">a b/c</div></div>
+      <div class="key" data-id="SQRT"><div class="secondary">n√</div><div class="primary">√</div></div>
+      <div class="key" data-id="POW"><div class="secondary">^-1</div><div class="primary">^</div></div>
+
+      <div class="key" data-id="X2"><div class="secondary">log</div><div class="primary">x²</div></div>
+      <div class="key" data-id="LOG"><div class="secondary">ln</div><div class="primary">log</div></div>
+      <div class="key" data-id="ANS"><div class="primary">Ans</div></div>
+      <div class="key" data-id="SIN"><div class="secondary">sin⁻¹</div><div class="primary">sin</div></div>
+      <div class="key" data-id="COS"><div class="secondary">cos⁻¹</div><div class="primary">cos</div></div>
+
+      <div class="key" data-id="TAN"><div class="secondary">tan⁻¹</div><div class="primary">tan</div></div>
+      <div class="key" data-id="LPAREN"><div class="primary">(</div></div>
+      <div class="key" data-id="RPAREN"><div class="primary">)</div></div>
+      <div class="key" data-id="7"><div class="secondary">π</div><div class="primary">7</div></div>
+      <div class="key" data-id="8"><div class="secondary">e</div><div class="primary">8</div></div>
+
+      <div class="key" data-id="9"><div class="secondary">i</div><div class="primary">9</div></div>
+      <div class="key" data-id="BACK"><div class="secondary">INS</div><div class="primary">⌫</div></div>
+      <div class="key gold" data-id="AC"><div class="secondary">OFF</div><div class="primary">AC</div></div>
+      <div class="key" data-id="4"><div class="secondary">A</div><div class="primary">4</div></div>
+      <div class="key" data-id="5"><div class="secondary">B</div><div class="primary">5</div></div>
+
+      <div class="key" data-id="6"><div class="secondary">C</div><div class="primary">6</div></div>
+      <div class="key op" data-id="MUL"><div class="secondary">nPr</div><div class="primary">×</div></div>
+      <div class="key op" data-id="DIV"><div class="secondary">nCr</div><div class="primary">÷</div></div>
+      <div class="key" data-id="1"><div class="secondary">D</div><div class="primary">1</div></div>
+      <div class="key" data-id="2"><div class="secondary">E</div><div class="primary">2</div></div>
+
+      <div class="key" data-id="3"><div class="secondary">F</div><div class="primary">3</div></div>
+      <div class="key op" data-id="PLUS"><div class="secondary">Σ</div><div class="primary">+</div></div>
+      <div class="key op" data-id="MINUS"><div class="secondary">∫</div><div class="primary">−</div></div>
+      <div class="key wide" data-id="0"><div class="secondary">x,y,z</div><div class="primary">0</div></div>
+      <div class="key" data-id="DOT"><div class="primary">.</div></div>
+
+      <div class="key" data-id="X10"><div class="secondary">ENG</div><div class="primary">×10^</div></div>
+      <div class="key" data-id="FORMAT"><div class="primary">FORMAT</div></div>
+      <div class="key op" data-id="EXE"><div class="secondary">≈</div><div class="primary">EXE</div></div>
+    </div>
+
+    <div class="note">Prototype UI — buttons are interactive (no calculation engine yet). Press SHIFT to view/toggle alternate labels.</div>
+  </div>
+
+  <script>
+    // Small interactive prototype script
+    const calc = document.querySelector('.calc');
+    const keys = Array.from(document.querySelectorAll('.key'));
+    const display = document.getElementById('display-line');
+    const shiftInd = document.getElementById('shift-ind');
+
+    let shiftActive = false;
+
+    function setShift(on){
+      shiftActive = on;
+      shiftInd.textContent = shiftActive ? 'SHIFT' : '';
+      // visually mark keys with gold secondary when shift active
+      keys.forEach(k=>{
+        if(shiftActive) k.classList.add('shift-active'); else k.classList.remove('shift-active');
+      });
+    }
+
+    // toggle shift when SHIFT key pressed
+    document.querySelector('[data-id="SHIFT"]').addEventListener('click',()=>{
+      setShift(!shiftActive);
+      flashKey(document.querySelector('[data-id="SHIFT"]'));
+    });
+
+    function flashKey(el){
+      el.classList.add('active');
+      setTimeout(()=>el.classList.remove('active'),140);
+    }
+
+    keys.forEach(k=>{
+      k.addEventListener('mousedown', (e)=>{
+        // simulate press
+        k.classList.add('active');
+      });
+      k.addEventListener('mouseup', (e)=>{
+        k.classList.remove('active');
+        const id = k.getAttribute('data-id');
+        handleKeyPress(id);
+      });
+      k.addEventListener('mouseleave', ()=>k.classList.remove('active'));
+      // touch support
+      k.addEventListener('touchstart',(e)=>{e.preventDefault();k.classList.add('active');});
+      k.addEventListener('touchend',(e)=>{e.preventDefault();k.classList.remove('active');handleKeyPress(k.getAttribute('data-id'))});
+    });
+
+    function handleKeyPress(id){
+      // SHIFT handled earlier; prevent double-handling
+      if(id==='SHIFT') return;
+
+      // Basic UX: if SHIFT is active, use the secondary label for "input", else use primary
+      const keyEl = document.querySelector(`[data-id='${id}']`);
+      const primary = keyEl.querySelector('.primary')?.textContent?.trim() || id;
+      const secondary = keyEl.querySelector('.secondary')?.textContent?.trim() || null;
+      const used = (shiftActive && secondary) ? secondary : primary;
+
+      // Visual small demo: append to display (not evaluating), except for special controls
+      if(id==='AC'){
+        display.textContent = ' ';
+        setShift(false);
+        return;
+      }
+      if(id==='BACK'){
+        // remove last char
+        display.textContent = display.textContent.slice(0,-1) || ' ';
+        return;
+      }
+      if(id==='EXE'){
+        // show a fake result animation
+        display.textContent = display.textContent + ' ⟶ ' + '0';
+        setTimeout(()=>display.textContent=' ',1000);
+        return;
+      }
+      if(id==='TOOLS'){
+        // demo: undo exists in tools - show message
+        display.textContent = '[TOOLS] Undo/Redo';
+        return;
+      }
+      if(id==='PAGE_SCROLL'){
+        display.textContent = '[Scroll]';
+        return;
+      }
+
+      // Append used label to display for prototype demo
+      display.textContent = (display.textContent.trim()==='' ? '' : display.textContent) + used;
+
+      // If SHIFT was a one-shot (typical Casio), reset it after single use
+      if(shiftActive){
+        setShift(false);
+      }
+    }
+
+    // initialize
+    setShift(false);
+  </script>
+</body>
+  </html>
